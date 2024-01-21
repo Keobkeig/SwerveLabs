@@ -8,6 +8,7 @@ package com.stuypulse.robot.constants;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.revrobotics.CANSparkMax;
 import static com.revrobotics.CANSparkMax.IdleMode;
 
@@ -23,6 +24,25 @@ import static com.revrobotics.CANSparkMax.IdleMode;
 public interface Motors {
 
     /** Classes to store all of the values a motor needs */
+    
+    int kDisableStatusFrame = 65535;
+
+    public static void disableStatusFrames(CANSparkMax motor, int... ids) {
+        for (int id : ids) {
+            motor.setPeriodicFramePeriod(PeriodicFrame.fromId(id), kDisableStatusFrame);
+        }
+    }
+
+    public interface Intake {
+        public CANSparkMaxConfig TOP_CONFIG = new CANSparkMaxConfig(false, IdleMode.kBrake, 60);
+        public CANSparkMaxConfig BOTTOM_CONFIG = new CANSparkMaxConfig(true, IdleMode.kBrake, 60);
+    }
+
+    public interface Swerve {
+        public CANSparkMaxConfig DRIVE_CONFIG = new CANSparkMaxConfig(false, IdleMode.kBrake, 60);
+        public CANSparkMaxConfig TURN_CONFIG = new CANSparkMaxConfig(false, IdleMode.kBrake, 60);
+    }
+
 
     public static class TalonSRXConfig {
         public final boolean INVERTED;
